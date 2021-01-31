@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+
+    <insert id="insertBoard" statementType="PREPARED" parameterType="shin.spring.mvc.vo.BoardVO">
+        insert into Board (title, userid, contents) values (#{title},#{userid},#{contents})
+    </insert>
+
+    <select id="selectList" statementType="PREPARED" resultType="shin.spring.mvc.vo.BoardVO" parameterType="int">
+        select bno, title, userid, regdate, thumbs, views from Board order by bno desc limit #{snum}, 10;
+    </select>
+
+    <select id="selectOne" statementType="PREPARED" parameterType="String" resultType="shin.spring.mvc.vo.BoardVO" >
+        select * from Board where bno = #{bno};
+    </select>
+
+    <update id="updateBoard" statementType="PREPARED" parameterType="shin.spring.mvc.vo.BoardVO">
+        update Board set title = #{title}, contents = #{contents}, regdate = current_timestamp where bno = #{bno};
+    </update>
+
+    <delete id="deleteBoard" statementType="PREPARED" parameterType="String">
+        delete from Board where bno = #{bno};
+    </delete>
+
+    <select id="countBoard" statementType="PREPARED" resultType="int">
+        select count(bno) from Board;
+    </select>
+
+    <update id="viewCount" statementType="PREPARED" parameterType="String">
+        update Board set views = views+1 where bno = #{bno};
+    </update>
+
+    <select id="checkUid" statementType="PREPARED" parameterType="String" resultType="String">
+        select userid from Board where bno = #{bno};
+    </select>
+</mapper>
